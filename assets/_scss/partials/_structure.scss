@@ -1,0 +1,55 @@
+@charset "utf-8";
+
+// Initialize
+//////////////////////////////
+
+// html { font-size: 62.5%; }
+
+body {
+  line-height: 1.6;
+  font-family: $ff_gothic;
+  letter-spacing: .03em;
+  font-size: $fz_normal;
+  color: $font-color;
+}
+
+// Typography
+//////////////////////////////
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 300;
+}
+
+
+// Links
+//////////////////////////////
+a {
+  color: $link-color;
+
+  &:hover {
+    color: lighten($link-color, 5%);
+  }
+}
+
+
+// Misc
+//////////////////////////////
+img { vertical-align: top; }
+
+ul, ol { list-style: none; }
+
+
+// Utilities
+//////////////////////////////
+.cf {
+  zoom: 1;
+
+  &:before {
+    content: '';
+    display: table;
+  }
+
+  &:after {
+    @extend .cf:before;
+    clear: both;
+  }
+}
