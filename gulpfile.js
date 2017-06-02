@@ -1,14 +1,37 @@
-"use strict"
+"use strict";
 
 let
   gulp = require("gulp"),
+  gutil = require("gulp-util"),
+  $ = require("gulp-load-plugins")(),
   browserify = require("browserify"),
-  babelify = require("babelify"),
+  // babelify = require("babelify"),
+  watchify = require("watchify"),
   source = require("vinyl-source-stream"),
   buffer = require("vinyl-buffer"),
-  $ = require("gulp-load-plugins")(),
-  browserSync = require("browser-sync").create(),
-  reload = browserSync.reload;
+  minimist = require("minimist"),
+  del = require("del"),
+  runSequence = require("run-sequence"),
+  browserSync = require("browser-sync"),
+  bs = browserSync.create(),
+  reload = bs.reload;
+
+const minimistOptions = {
+  string: "env",
+  default: {
+    env: process.env.NODE_ENV || "development"
+  }
+};
+
+const options = minimist(process.argv.slice(2), minimistOptions);
+
+let isProduction = false;
+
+if (options.env === "production") {
+  isProduction = true;
+}
+
+gutil.log("Environment:", gutil.colors.yellow(options.env));
 
 const PATHS = {
   styles: {
@@ -22,26 +45,10 @@ const PATHS = {
   html: "**/*.html"
 };
 
-const AUTOPREFIXER_BROWSER = [
-  "ie >= 8",
-  "ff >= 30",
-  "chrome >= 34",
-  "safari >= 7",
-  "opera >= 23",
-  "ios >= 7",
-  "android >= 4.4",
-  "bb >= 10"
-];
-
-const CONFIG = {
-  minify: {
-    css: true,
-    js: true
-  }
-};
+const AUTOPREFIXER_BROWSER = ["last 2 versions"];
 
 gulp.task("serve", () => {
-  browserSync.init({
+  bs.init({
     server: {
       baseDir: "./"
     }
@@ -51,56 +58,79 @@ gulp.task("serve", () => {
 gulp.task("styles", () => {
   gulp.src(`${PATHS.styles.scss}/*.scss`)
   .pipe($.plumber())
+  .pipe($.if(!isProduction, $.sourcemaps.init()))
   .pipe($.sass().on("erorr", $.sass.logError))
-  .pipe($.pleeease({
-    autoprefixer: {
-      browsers: AUTOPREFIXER_BROWSER
-    },
-    opacity: true,
-    minifier: CONFIG.minify.css,
-    mqpacker: true
-  }))
+  .pipe($.autoprefixer({ browsers: AUTOPREFIXER_BROWSER }))
+  .pipe($.groupCssMediaQueries())
+  .pipe($.csscomb())
+  .pipe($.csso())
+  .pipe($.if(!isProduction, $.sourcemaps.write("./")))
   .pipe(gulp.dest(PATHS.styles.css))
-  .pipe(browserSync.stream());
+  .pipe(bs.stream());
 });
 
 gulp.task("scripts", () => {
-  browserify(`${PATHS.scripts.altJS}/index.js`)
-  .transform(babelify, { presets: ["es2015"] })
-  .bundle()
-  .on("error", errorHandler)
-  .pipe(source("bundle.js"))
-  .pipe(buffer())
-  .pipe(gulp.dest(PATHS.scripts.js))
-  .pipe($.if(CONFIG.minify.js, $.uglify()))
-  .pipe($.if(CONFIG.minify.js, $.rename({ suffix: ".min" })))
-  .pipe($.if(CONFIG.minify.js, gulp.dest(PATHS.scripts.js)))
-  .pipe(browserSync.stream());
+  let bundler;
+
+  const options = {
+    entries: [`${PATHS.scripts.altJS}/index.js`],
+    transform: [["babelify", { presets: ["es2015"] }]],
+    plugin: ["babel-plugin-transform-object-rest-spread"]
+  };
+
+  const filename = "bundle.js";
+
+  if (isProduction) {
+    bundler = browserify(options);
+  } else {
+    options.cache = {};
+    options.packageCache = {};
+    options.fullPaths = true;
+    options.debug = true;
+    bundler = watchify(browserify(options));
+  }
+
+  function bundle() {
+    bundler
+      .bundle()
+      .on("error", errorHandler)
+      .pipe(source(filename))
+      .pipe(buffer())
+      .pipe($.if(isProduction, $.uglify()))
+      .pipe(gulp.dest(PATHS.scripts.js))
+      .on("end", () => {
+        gutil.log("Finished", "'" + gutil.colors.cyan("Browserify Bundled") + "'", gutil.colors.green(filename));
+        if (!isProduction && bs.active) reload();
+      });
+  }
+
+  bundler.on("update", bundle);
+  bundle();
 });
 
 gulp.task("watch", () => {
-  $.watch([PATHS.scripts.altJS + "/**/*.js"], () => {
-    gulp.start(["scripts"]);
-  });
-
   $.watch([PATHS.styles.scss + "/**/*.scss"], () => {
-    gulp.start(["styles"]);
+    gulp.start("styles");
   });
 
   $.watch([PATHS.html], () => {
-    browserSync.reload();
+    reload();
   });
 });
 
-gulp.task("build", (cb) => {
-  gulp.start(["styles", "scripts"], cb);
+gulp.task("clean", (cb) => {
+  return del([`${PATHS.scripts.js}/*.js`, `${PATHS.styles.css}`], cb);
 });
 
-gulp.task("default", (cb) => {
-  gulp.start(["build", "serve", "watch"], cb);
+gulp.task("default", () => {
+  if (!isProduction) {
+    runSequence("clean", ["styles", "scripts"], "serve", "watch");
+  } else {
+    runSequence("clean", ["styles", "scripts"]);
+  }
 });
 
-let errorHandler = function(err) {
-  console.log(err);
+const errorHandler = function(err) {
+  gutil.log(gutil.colors.red(`Error: ${err}`));
   this.emit("end");
 };
