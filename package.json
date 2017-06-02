@@ -31,7 +31,6 @@
     "gulp-watch": "^4.3.5",
     "gutil": "^1.6.4",
     "minimist": "^1.2.0",
-    "rimraf": "^2.6.1",
     "run-sequence": "^1.2.2",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
