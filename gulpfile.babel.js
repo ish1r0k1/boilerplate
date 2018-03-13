@@ -8,7 +8,7 @@ import del from "del";
 import browserSync from "browser-sync";
 import webpack from "webpack";
 import webpackStream from "webpack-stream";
-import path from 'path';
+import path from "path";
 
 const $ = gulpLoadPlugins(),
   bs = browserSync.create(),
@@ -40,7 +40,7 @@ export const styles = () => {
 export const serve = () => {
   return bs.init({
     server: {
-      baseDir: path.resolve(__dirname, 'dist')
+      baseDir: path.resolve(__dirname, "dist")
     }
   });
 };
