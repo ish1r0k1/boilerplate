@@ -4,7 +4,8 @@
   "description": "Site development template for fast and easily",
   "main": "index.js",
   "scripts": {
-    "start": "gulp --env development",
+    "start": "yarn build",
+    "serve": "gulp --env development",
     "build": "gulp --env production"
   },
   "author": "Hiroki Ishiwatari",
@@ -15,7 +16,7 @@
     "browser-sync": "^2.11.1",
     "browserify": "^16.1.1",
     "del": "^3.0.0",
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.0",
     "gulp-autoprefixer": "^5.0.0",
     "gulp-babel": "^7.0.1",
     "gulp-csscomb": "^3.0.8",
@@ -40,6 +41,8 @@
     "babelify": "^8.0.0"
   },
   "babel": {
-    "presets": ["es2015"]
+    "presets": [
+      "es2015"
+    ]
   }
 }
