@@ -47,10 +47,7 @@ export const styles = () => {
     .pipe($.plumber())
     .pipe($.if(!isProduction, $.sourcemaps.init()))
     .pipe($.sass().on("erorr", $.sass.logError))
-    .pipe($.autoprefixer({ browsers: AUTOPREFIXER_BROWSER }))
-    .pipe($.groupCssMediaQueries())
-    .pipe($.csscomb())
-    .pipe($.csso())
+    .pipe($.postcss())
     .pipe($.if(!isProduction, $.sourcemaps.write("./")))
     .pipe(dest(PATHS.styles.css))
     .pipe(bs.stream());
