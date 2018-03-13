@@ -11,6 +11,8 @@ import minimist from "minimist";
 import del from "del";
 import runSequence from "run-sequence";
 import browserSync from "browser-sync";
+import webpack from 'webpack';
+import webpackStream from 'webpack-stream';
 
 const $ = gulpLoadPlugins(),
   bs = browserSync.create(),
@@ -62,51 +64,20 @@ export const serve = () => {
 };
 
 export const scripts = () => {
-  let bundler;
-
-  const options = {
-    entries: [`${PATHS.scripts.altJS}/index.js`],
-    transform: [["babelify"]],
-    plugin: ["babel-plugin-transform-object-rest-spread"]
-  };
-
-  const filename = "bundle.js";
-
-  if (isProduction || !bs.active) {
-    bundler = browserify(options);
-  } else {
-    options.cache = {};
-    options.packageCache = {};
-    options.fullPaths = true;
-    options.debug = true;
-    bundler = watchify(browserify(options));
-  }
-
-  function bundle() {
-    return bundler
-      .bundle()
-      .on("error", errorHandler)
-      .pipe(source(filename))
-      .pipe(buffer())
-      .pipe($.if(isProduction, $.uglify()))
-      .pipe(dest(PATHS.scripts.js))
-      .on("end", () => {
-        gutil.log(
-          "Finished",
-          "'" + gutil.colors.cyan("Browserify Bundled") + "'",
-          gutil.colors.green(filename)
-        );
-        if (!isProduction && bs.active) reload();
-      });
-  }
-
-  bundler.on("update", bundle);
-  return bundle();
-};
+  return src(`${PATHS.scripts.altJS}/index.js`)
+    .pipe(webpackStream({
+      mode: options.env,
+      output: {
+        filename: '[name].bundle.js'
+      }
+    }, webpack))
+    .pipe(dest(PATHS.scripts.js))
+}
 
 export const watch = () => {
-  $.watch(`${PATHS.styles.scss}/**/*.scss`, styles),
-    $.watch(`${PATHS.html}`, reload());
+  $.watch(`${PATHS.styles.scss}/**/*.scss`, styles)
+  $.watch(`${PATHS.scripts.altJS}/**/*.js`, scripts)
+    $.watch(`${PATHS.html}`, reload);
 };
 
 export const clean = () => {
@@ -120,7 +91,7 @@ const errorHandler = function(err) {
 
 export default (() => {
   if (!isProduction) {
-    return series(clean, parallel(styles, scripts), serve, watch);
+    return series(clean, parallel(styles, scripts), parallel(serve, watch));
   } else {
     return series(clean, parallel(styles, scripts));
   }
