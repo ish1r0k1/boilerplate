@@ -1,20 +1,20 @@
 "use strict";
 
-let
-  gulp = require("gulp"),
-  gutil = require("gulp-util"),
-  $ = require("gulp-load-plugins")(),
-  browserify = require("browserify"),
-  // babelify = require("babelify"),
-  watchify = require("watchify"),
-  source = require("vinyl-source-stream"),
-  buffer = require("vinyl-buffer"),
-  minimist = require("minimist"),
-  del = require("del"),
-  runSequence = require("run-sequence"),
-  browserSync = require("browser-sync"),
-  bs = browserSync.create(),
-  reload = bs.reload;
+import gulp from 'gulp';
+import gutil from "gulp-util"
+import gulpLoadPlugins from 'gulp-load-plugins'
+import browserify from 'browserify'
+import watchify from "watchify"
+import source from "vinyl-source-stream"
+import buffer from "vinyl-buffer"
+import minimist from "minimist"
+import del from "del"
+import runSequence from "run-sequence"
+import browserSync from "browser-sync"
+
+const $ = gulpLoadPlugins(),
+      bs = browserSync.create(),
+      reload = bs.reload;
 
 const minimistOptions = {
   string: "env",
@@ -74,7 +74,7 @@ gulp.task("scripts", () => {
 
   const options = {
     entries: [`${PATHS.scripts.altJS}/index.js`],
-    transform: [["babelify", { presets: ["es2015"] }]],
+    transform: [["babelify"]],
     plugin: ["babel-plugin-transform-object-rest-spread"]
   };
 
