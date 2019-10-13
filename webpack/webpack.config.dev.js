@@ -1,6 +1,8 @@
 const webpack = require('webpack')
 const merge = require('webpack-merge')
 const common = require('./webpack.common')
+const sass = require('sass')
+const fiber = require('fibers')
 
 module.exports = merge(common, {
   mode: 'development',
@@ -17,7 +19,19 @@ module.exports = merge(common, {
     rules: [
       {
         test: /\.s[ac]ss$/i,
-        use: ['style-loader', 'css-loader?sourceMap=true', 'sass-loader'],
+        use: [
+          'style-loader',
+          'css-loader?sourceMap=true',
+          {
+            loader: 'sass-loader',
+            options: {
+              implementation: sass,
+              sassOptions: {
+                fiber,
+              },
+            },
+          },
+        ],
       },
     ],
   },

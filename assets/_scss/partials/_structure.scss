@@ -43,13 +43,13 @@ ul, ol { list-style: none; }
 .cf {
   zoom: 1;
 
-  &:before {
+  &:before,
+  &:after {
     content: '';
     display: table;
   }
 
   &:after {
-    @extend .cf:before;
     clear: both;
   }
 }

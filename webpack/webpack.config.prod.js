@@ -4,6 +4,8 @@ const common = require('./webpack.common')
 const cssnano = require('cssnano')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const sass = require('sass')
+const fiber = require('fibers')
 
 module.exports = merge(common, {
   mode: 'production',
@@ -42,7 +44,19 @@ module.exports = merge(common, {
     rules: [
       {
         test: /\.s[ac]ss$/i,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader'],
+        use: [
+          MiniCssExtractPlugin.loader,
+          'css-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              implementation: sass,
+              sassOptions: {
+                fiber
+              }
+            },
+          },
+        ],
       },
     ],
   },
