@@ -31,19 +31,37 @@ module.exports = {
         },
       },
       {
-        test: /\.(pdf|gif|png|jpe?g|svg)$/,
-        use: {
-          loader: 'file-loader',
-        },
+        test: /\.(gif|png|jpe?g|svg)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              outputPath: 'static/',
+            },
+          },
+          {
+            loader: 'image-webpack-loader',
+            options: {
+              disable: this.module !== 'production',
+            },
+          },
+        ],
       },
       {
         test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-        // test: /\.(ico|jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2)(\?.*)?$/,
         use: {
           loader: 'file-loader',
           options: {
             name: '[path][name].[ext]',
+            outputPath: 'fonts/',
           },
+        },
+      },
+      {
+        test: /\.html$/,
+        loader: 'html-loader',
+        options: {
+          minimize: true,
         },
       },
     ],
