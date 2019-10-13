@@ -8,9 +8,4 @@ node_modules
 jspm_packages
 
 # Compiled files
-assets/js/bundle*
-assets/css
-
-# Images
-assets/img
-assets/images
+public
