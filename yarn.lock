@@ -6364,6 +6364,11 @@ responselike@1.0.2:
   dependencies:
     lowercase-keys "^1.0.0"
 
+ress@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/ress/-/ress-2.0.1.tgz#2e1824e19a9506aa09a42621ed6dc4d92b1b8dca"
+  integrity sha512-yIFO2SiMp/lWdtIVE9E5I5ZCLAcwsyUYE7g2LdDmNAIhHvw6e9tL3Ybr8Hi9nQOtQnMrnU9UTkxHxWFNL9Y/4w==
+
 ret@~0.1.10:
   version "0.1.15"
   resolved "https://registry.yarnpkg.com/ret/-/ret-0.1.15.tgz#b8a4825d5bdb1fc3f6f53c2bc33f81388681c7bc"
