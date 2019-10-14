@@ -4,43 +4,48 @@
 //////////////////////////////
 
 // ======== Breakpoints ========
-// snippets: @media (max-width: $bp-larger-than-mobile - 1) { }
-//           @media (min-width: $bp-larger-than-mobile) and (max-width: $bp-larger-than-tablet - 1) { }
-//           @media (min-width: $bp-larger-than-tablet) and (max-width: $bp-larger-than-desktop - 1) { }
-//           @media (min-width: $bp-larger-than-desktop) { }
-$bp-larger-than-mobile    : 480px !default;
-$bp-larger-than-tablet    : 768px !default;
-$bp-larger-than-desktop   : 1024px !default;
-$bp-larger-than-desktophd : 1200px !default;
+$gap: 32px;
+$tablet: 769px;
+$desktop: 960px + (2 * $gap);
+$widescreen: 1152px + (2 * $gap);
+$fullhd: 1344 + (2 * $gap);
+
+$widescreen-enabled: true !default;
+$widescreen-enabled: true !default;
 
 // ======== Colors ========
 $white: #fff;
-$black: #000;
+$black: #212121;
+$gray: lighten($black, 30);
+$tomato: tomato;
+$rebeccaPurple: rebeccapurple;
+$cornflowerBlue: cornflowerblue;
 
-$primary-color: tomato;
-$font-color: $black;
-$link-color: $font-color;
 
 // SNS
-$facebook-blue: #3B5998;
-$hatebu-blue: #008FDE;
-$twitter-blue: #55ACEE;
+$facebook-blue: #3b5998;
+$hatebu-blue: #008fde;
+$twitter-blue: #55acee;
 $line-green: #00c300;
 $gp-red: #dd4b39;
 
 // Typography
-$ff_gothic: "Helvetica Neue", Helvetica, Arial, "游ゴシック", YuGothic, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
-$ff_gothic_sp: Verdana, Roboto, "Droid Sans", "游ゴシック", YuGothic, "ヒラギノ角ゴ ProN W3", "Hiragino Kaku Gothic ProN", "メイリオ", Meiryo, sans-serif;
-$ff_mincho: "游明朝",YuMincho,"ヒラギノ明朝 ProN W3","Hiragino Mincho ProN","HG明朝","ＭＳ Ｐ明朝","ＭＳ 明朝",serif;
+$font-family-en: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Roboto;
+$font-family-jp: YuGothic, 'Hiragino Kaku Gothic ProN',
+  'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo;
+$font-family: $font-family-en, $font-family-jp, sans-serif;
 
+$weight-normal: 400;
+$weight-bold: 600;
 
-// $fz_largest : 42px;
-// $fz_larger: 30px;
-// $fz_large: 24px;
-// $fz_medium: 18px;
-$fz_normal: 15px;
-// $fz_small: 12px;
-// $fz_smaller : 10px;
+$scaleRatio: 1.333;
+
+$size-normal: 1.6rem;
+$size-medium: $size-normal * $scaleRatio;
+$size-large: $size-normal * $scaleRatio * $scaleRatio;
+$size-xlarge: $size-normal * $scaleRatio * $scaleRatio * $scaleRatio;
+$size-xxlarge: $size-normal * $scaleRatio * $scaleRatio * $scaleRatio * $scaleRatio;
+$size-small: $size-normal * $size-normal / ($size-normal * $scaleRatio);
 
 // Index
 //////////////////////////////
@@ -49,4 +54,4 @@ $z: header, footer, content;
 
 // Sizes
 //////////////////////////////
-$mw: 1080px;
+$max-width: 1080px;

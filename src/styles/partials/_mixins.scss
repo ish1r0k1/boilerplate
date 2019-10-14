@@ -2,14 +2,102 @@
 
 // Mixin
 //////////////////////////////
-@mixin hover($n, $sec: .3s, $easing: ease) {
+@mixin hover($n, $sec: 0.3s, $easing: ease) {
   transition: opacity $sec $easing;
 
-  &:hover { opacity: $n; }
+  &:hover {
+    opacity: $n;
+  }
 }
 
 @mixin gradient($from, $to) {
   background: $from;
-  background: -webkit-gradient(linear, left top, left bottom color-stop(0, $from), color-stop(1, $from), color-stop(1, $to));
+  background: -webkit-gradient(
+    linear,
+    left top,
+    left bottom color-stop(0, $from),
+    color-stop(1, $from),
+    color-stop(1, $to)
+  );
   background: linear-gradient(to bottom, $from 0%, $from 50%, $to 100%);
+}
+
+// Inspiration from https://github.com/jgthms/bulma/blob/f001f3a2dc3ea65eabec2df251c90c55d99fb219/sass/utilities/mixins.sass#L71
+
+@mixin mobile {
+  @media screen and (max-width: $tablet - 1px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media screen and (min-width: $tablet), print {
+    @content;
+  }
+}
+
+@mixin tablet-only {
+  @media screen and (min-width: $tablet) and (max-width: $desktop - 1px) {
+    @content;
+  }
+}
+
+@mixin touch {
+  @media screen and (max-width: $desktop - 1px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media screen and (min-width: $desktop) {
+    @content;
+  }
+}
+
+@mixin desktop-only {
+  @if $widescreen-enabled {
+    @media screen and (min-width: $desktop) and (max-width: $widescreen - 1px) {
+      @content;
+    }
+  }
+}
+
+@mixin until-widescreen {
+  @if $widescreen-enabled {
+    @media screen and (max-width: $widescreen - 1px) {
+      @content;
+    }
+  }
+}
+
+@mixin widescreen {
+  @if $widescreen-enabled {
+    @media screen and (min-width: $widescreen) {
+      @content;
+    }
+  }
+}
+
+@mixin widescreen-only {
+  @if $widescreen-enabled and $fullhd-enabled {
+    @media screen and (min-width: $widescreen) and (max-width: $fullhd - 1px) {
+      @content;
+    }
+  }
+}
+
+@mixin until-fullhd {
+  @if $fullhd-enabled {
+    @media screen and (max-width: $fullhd - 1px) {
+      @content;
+    }
+  }
+}
+
+@mixin fullhd {
+  @if $fullhd-enabled {
+    @media screen and (min-width: $fullhd) {
+      @content;
+    }
+  }
 }

@@ -3,53 +3,67 @@
 // Initialize
 //////////////////////////////
 
-// html { font-size: 62.5%; }
+%font {
+  font-family: $font-family;
+  font-feature-settings: 'pkna' 1;
+  font-weight: $weight-normal;;
+}
+
+:root {
+  --color-primary: #{$tomato};
+  --color-primary-a20: #{lighten($tomato, 8)};
+  --color-secondary: #{$rebeccaPurple};
+  --color-secondary-a20: #{lighten($rebeccaPurple, 8)};
+  --color-endpoint: #{$cornflowerBlue};
+  --color-primary-text: #{$black};
+  --color-secondary-text: #{$gray};
+  --color-divider: #{$gray};
+  --color-white: #{$white};
+  --color-black: #{$black};
+}
+
+html {
+  @extend %font;
+  font-size: 10px;
+}
 
 body {
+  @extend html;
   line-height: 1.6;
-  font-family: $ff_gothic;
-  letter-spacing: .03em;
-  font-size: $fz_normal;
-  color: $font-color;
+  letter-spacing: 0.03em;
+  font-size: $size-normal;
+  color: var(--color-primary-text);
 }
 
 // Typography
 //////////////////////////////
-h1, h2, h3, h4, h5, h6 {
-  font-weight: 300;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+strong {
+  @extend %font;
+  font-weight: $weight-bold;
 }
-
 
 // Links
 //////////////////////////////
 a {
-  color: $link-color;
-
-  &:hover {
-    color: lighten($link-color, 5%);
-  }
+  color: var(--color-endpoint);
 }
-
 
 // Misc
 //////////////////////////////
-img { vertical-align: top; }
-
-ul, ol { list-style: none; }
-
+img {
+  vertical-align: top;
+}
 
 // Utilities
 //////////////////////////////
-.cf {
-  zoom: 1;
-
-  &:before,
-  &:after {
-    content: '';
-    display: table;
-  }
-
-  &:after {
-    clear: both;
-  }
+.clearfix::after {
+  content: '';
+  clear: both;
+  display: table;
 }
