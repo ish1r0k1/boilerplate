@@ -1,5 +1,5 @@
 const webpack = require('webpack')
-const merge = require('webpack-merge')
+const { merge } = require('webpack-merge')
 const common = require('./webpack.common')
 const cssnano = require('cssnano')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
@@ -9,6 +9,9 @@ const fiber = require('fibers')
 
 module.exports = merge(common, {
   mode: 'production',
+  stats: {
+    colors: true,
+  },
   output: {
     filename: 'js/[name].[chunkhash:8].js',
     chunkFilename: 'js/[name].[chunkhash:8].chunk.js',
@@ -52,8 +55,8 @@ module.exports = merge(common, {
             options: {
               implementation: sass,
               sassOptions: {
-                fiber
-              }
+                fiber,
+              },
             },
           },
         ],
