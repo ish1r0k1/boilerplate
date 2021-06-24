@@ -1,7 +1,7 @@
 const webpack = require('webpack')
 const cssnano = require('cssnano')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const sass = require('sass')
 const fiber = require('fibers')
 
@@ -23,22 +23,15 @@ module.exports = {
       filename: '[name].[contenthash].css',
       chunkFilename: '[id].css',
     }),
-    new OptimizeCssAssetsPlugin({
-      assetNameRegExp: /\.css$/,
-      cssProcessor: cssnano,
-      cssProcessorPluginOptions: {
+    new CssMinimizerPlugin({
+      minimizerOptions: {
         preset: [
           'default',
           {
-            autoprefixer: {
-              add: true,
-              browsers: ['> 1%', 'last 2 versions'],
-            },
             discardComments: { removeAll: true },
           },
         ],
       },
-      canPrint: true,
     }),
   ],
   module: {
@@ -48,6 +41,14 @@ module.exports = {
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                plugins: [['autoprefixer']],
+              },
+            },
+          },
           {
             loader: 'sass-loader',
             options: {
