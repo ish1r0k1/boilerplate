@@ -4,7 +4,7 @@
   "description": "Site development template for fast and easily",
   "main": "index.js",
   "scripts": {
-    "build": "NODE_ENV=production webpack --config webpack/webpack.config.prod.js  --colors",
+    "build": "NODE_ENV=production webpack --config webpack/webpack.config.prod.js",
     "start": "webpack-dev-server --open  --config webpack/webpack.config.dev.js",
     "prepare": "husky install"
   },
@@ -31,8 +31,8 @@
     "sass": "^1.23.0",
     "sass-loader": "^8.0.0",
     "style-loader": "^1.0.0",
-    "webpack": "^4.41.0",
-    "webpack-cli": "^3.3.9",
+    "webpack": "^5.40.0",
+    "webpack-cli": "^4.7.2",
     "webpack-dev-server": "^3.8.2",
     "webpack-merge": "^4.2.2"
   },
