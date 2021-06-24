@@ -4,7 +4,7 @@ const fiber = require('fibers')
 
 module.exports = {
   mode: 'development',
-  devtool: 'eval-cheap-source-map',
+  devtool: 'inline-cheap-source-map',
   output: {
     chunkFilename: 'js/[name].chunk.js',
   },
