@@ -10,7 +10,7 @@ const developmentConfig = require('./webpack.config.dev')
 const commonConfig = {
   entry: [path.resolve(__dirname, '../src/js/index.js')],
   output: {
-    path: path.join(__dirname, '../public'),
+    path: path.join(__dirname, '../dist'),
     filename: 'js/[name].js',
   },
   plugins: [
