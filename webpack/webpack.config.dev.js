@@ -1,12 +1,10 @@
-const webpack = require('webpack')
-const merge = require('webpack-merge')
-const common = require('./webpack.common')
-const sass = require('sass')
 const fiber = require('fibers')
+const sass = require('sass')
+const webpack = require('webpack')
 
-module.exports = merge(common, {
+module.exports = {
   mode: 'development',
-  devtool: 'cheap-eval-source-map',
+  devtool: 'inline-cheap-source-map',
   output: {
     chunkFilename: 'js/[name].chunk.js',
   },
@@ -18,7 +16,7 @@ module.exports = merge(common, {
   module: {
     rules: [
       {
-        test: /\.s[ac]ss$/i,
+        test: /\.(s[ac]|c)ss$/i,
         use: [
           'style-loader',
           'css-loader?sourceMap=true',
@@ -35,4 +33,4 @@ module.exports = merge(common, {
       },
     ],
   },
-})
+}

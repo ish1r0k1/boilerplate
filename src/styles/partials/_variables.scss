@@ -1,4 +1,5 @@
 @charset "utf-8";
+@use "sass:math";
 
 // Variables
 //////////////////////////////
@@ -20,7 +21,6 @@ $gray: lighten($black, 30);
 $tomato: tomato;
 $rebeccaPurple: rebeccapurple;
 $cornflowerBlue: cornflowerblue;
-
 
 // SNS
 $facebook-blue: #3b5998;
@@ -44,8 +44,9 @@ $size-normal: 1.6rem;
 $size-medium: $size-normal * $scaleRatio;
 $size-large: $size-normal * $scaleRatio * $scaleRatio;
 $size-xlarge: $size-normal * $scaleRatio * $scaleRatio * $scaleRatio;
-$size-xxlarge: $size-normal * $scaleRatio * $scaleRatio * $scaleRatio * $scaleRatio;
-$size-small: $size-normal * $size-normal / ($size-normal * $scaleRatio);
+$size-xxlarge: $size-normal * $scaleRatio * $scaleRatio * $scaleRatio *
+  $scaleRatio;
+$size-small: math.div($size-normal * $size-normal, $size-normal * $scaleRatio);
 
 // Index
 //////////////////////////////

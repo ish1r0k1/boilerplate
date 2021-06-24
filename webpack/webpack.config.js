@@ -1,19 +1,24 @@
-const path = require('path')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const { default: merge } = require('webpack-merge')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
+const developmentConfig = require('./webpack.config.dev')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const path = require('path')
+const productionConfig = require('./webpack.config.prod')
 
-module.exports = {
+const commonConfig = {
   entry: [path.resolve(__dirname, '../src/js/index.js')],
   output: {
-    path: path.join(__dirname, '../public'),
+    path: path.join(__dirname, '../dist'),
     filename: 'js/[name].js',
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new CopyWebpackPlugin([
-      { from: path.resolve(__dirname, '../src/static'), to: 'static' },
-    ]),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: path.resolve(__dirname, '../src/static'), to: 'static' },
+      ],
+    }),
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, '../src/index.html'),
     }),
@@ -66,4 +71,16 @@ module.exports = {
       },
     ],
   },
+}
+
+module.exports = (_, args) => {
+  switch (args.mode) {
+    case 'production': {
+      return merge(commonConfig, productionConfig)
+    }
+    case 'development':
+    default: {
+      return merge(commonConfig, developmentConfig)
+    }
+  }
 }
