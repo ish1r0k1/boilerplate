@@ -1,13 +1,11 @@
 const webpack = require('webpack')
-const { merge } = require('webpack-merge')
-const common = require('./webpack.common')
 const cssnano = require('cssnano')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const sass = require('sass')
 const fiber = require('fibers')
 
-module.exports = merge(common, {
+module.exports = {
   mode: 'production',
   stats: {
     colors: true,
@@ -63,4 +61,4 @@ module.exports = merge(common, {
       },
     ],
   },
-})
+}

@@ -1,10 +1,8 @@
 const webpack = require('webpack')
-const { merge } = require('webpack-merge')
-const common = require('./webpack.common')
 const sass = require('sass')
 const fiber = require('fibers')
 
-module.exports = merge(common, {
+module.exports = {
   mode: 'development',
   devtool: 'eval-cheap-source-map',
   output: {
@@ -35,4 +33,4 @@ module.exports = merge(common, {
       },
     ],
   },
-})
+}

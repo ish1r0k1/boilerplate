@@ -4,8 +4,8 @@
   "description": "Site development template for fast and easily",
   "main": "index.js",
   "scripts": {
-    "build": "NODE_ENV=production webpack --config webpack/webpack.config.prod.js",
-    "start": "webpack serve --open  --config webpack/webpack.config.dev.js",
+    "build": "NODE_ENV=production webpack --config webpack/webpack.config.js --mode=production",
+    "start": "webpack serve --open  --config webpack/webpack.config.js --mode=development",
     "prepare": "husky install"
   },
   "author": "Hiroki Ishiwatari",
