@@ -4,6 +4,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const sass = require('sass')
 const fiber = require('fibers')
+const TerserPlugin = require('terser-webpack-plugin')
 
 module.exports = {
   mode: 'production',
@@ -60,6 +61,24 @@ module.exports = {
           },
         ],
       },
+    ],
+  },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        minify: (file, sourceMap) => {
+          const uglifyJsOptions = {}
+
+          if (sourceMap) {
+            uglifyJsOptions.sourceMap = {
+              content: sourceMap,
+            }
+          }
+
+          return require('uglify-js').minify(file, uglifyJsOptions)
+        },
+      }),
     ],
   },
 }
