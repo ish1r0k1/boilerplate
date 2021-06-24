@@ -6,7 +6,7 @@ const fiber = require('fibers')
 
 module.exports = merge(common, {
   mode: 'development',
-  devtool: 'cheap-eval-source-map',
+  devtool: 'eval-cheap-source-map',
   output: {
     chunkFilename: 'js/[name].chunk.js',
   },
