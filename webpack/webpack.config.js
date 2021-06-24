@@ -1,11 +1,10 @@
-const path = require('path')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { default: merge } = require('webpack-merge')
-
-const productionConfig = require('./webpack.config.prod')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
 const developmentConfig = require('./webpack.config.dev')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const path = require('path')
+const productionConfig = require('./webpack.config.prod')
 
 const commonConfig = {
   entry: [path.resolve(__dirname, '../src/js/index.js')],

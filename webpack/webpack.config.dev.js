@@ -1,6 +1,6 @@
-const webpack = require('webpack')
-const sass = require('sass')
 const fiber = require('fibers')
+const sass = require('sass')
+const webpack = require('webpack')
 
 module.exports = {
   mode: 'development',

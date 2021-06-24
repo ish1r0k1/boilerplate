@@ -1,10 +1,9 @@
-const webpack = require('webpack')
-const cssnano = require('cssnano')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
-const sass = require('sass')
 const fiber = require('fibers')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const sass = require('sass')
 const TerserPlugin = require('terser-webpack-plugin')
+const webpack = require('webpack')
 
 module.exports = {
   mode: 'production',
