@@ -1,14 +1,15 @@
-const webpack = require('webpack')
-const merge = require('webpack-merge')
-const common = require('./webpack.common')
-const cssnano = require('cssnano')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
-const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
-const sass = require('sass')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const fiber = require('fibers')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const sass = require('sass')
+const TerserPlugin = require('terser-webpack-plugin')
+const webpack = require('webpack')
 
-module.exports = merge(common, {
+module.exports = {
   mode: 'production',
+  stats: {
+    colors: true,
+  },
   output: {
     filename: 'js/[name].[chunkhash:8].js',
     chunkFilename: 'js/[name].[chunkhash:8].chunk.js',
@@ -19,45 +20,64 @@ module.exports = merge(common, {
     }),
     new webpack.optimize.ModuleConcatenationPlugin(),
     new MiniCssExtractPlugin({
-      filename: '[name].css',
+      filename: '[name].[contenthash].css',
       chunkFilename: '[id].css',
     }),
-    new OptimizeCssAssetsPlugin({
-      assetNameRegExp: /\.css$/,
-      cssProcessor: cssnano,
-      cssProcessorPluginOptions: {
+    new CssMinimizerPlugin({
+      minimizerOptions: {
         preset: [
           'default',
           {
-            autoprefixer: {
-              add: true,
-              browsers: ['> 1%', 'last 2 versions'],
-            },
             discardComments: { removeAll: true },
           },
         ],
       },
-      canPrint: true,
     }),
   ],
   module: {
     rules: [
       {
-        test: /\.s[ac]ss$/i,
+        test: /\.(s[ac]|c)ss$/i,
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
+          {
+            loader: 'postcss-loader',
+            options: {
+              postcssOptions: {
+                plugins: [['autoprefixer']],
+              },
+            },
+          },
           {
             loader: 'sass-loader',
             options: {
               implementation: sass,
               sassOptions: {
-                fiber
-              }
+                fiber,
+              },
             },
           },
         ],
       },
     ],
   },
-})
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new TerserPlugin({
+        minify: (file, sourceMap) => {
+          const uglifyJsOptions = {}
+
+          if (sourceMap) {
+            uglifyJsOptions.sourceMap = {
+              content: sourceMap,
+            }
+          }
+
+          return require('uglify-js').minify(file, uglifyJsOptions)
+        },
+      }),
+    ],
+  },
+}
